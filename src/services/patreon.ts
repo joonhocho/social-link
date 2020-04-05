@@ -1,17 +1,21 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'patreon';
 
 export const addPatreon = (parser: SocialLinkParser) =>
   parser.register(['patreon.com', 'www.patreon.com'], ({ pathnameParts }) => {
-    const [username] = pathnameParts;
-    if (username) {
+    const [user] = pathnameParts;
+    if (user) {
       return {
         service,
         type: 'user',
-        username,
-        url: `https://www.patreon.com/${username}`,
+        user,
+        url: `https://www.patreon.com/${user}`,
       };
     }
     return null;
   });
+
+export const addPatreonBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ user }) => `https://www.patreon.com/${user}`);

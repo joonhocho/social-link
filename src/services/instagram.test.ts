@@ -1,16 +1,25 @@
-import { addInstagram } from './instagram';
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
+
+import { addInstagram, addInstagramBuilder } from './instagram';
 
 test('instagram', () => {
   const parser = new SocialLinkParser();
   addInstagram(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addInstagramBuilder(builder);
 
-  expect(parser.parse(`https://instagram.com/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://instagram.com/${user}`)).toEqual({
     service: 'instagram',
     type: 'user',
-    url: `https://www.instagram.com/${username}/`,
-    username,
+    url: `https://www.instagram.com/${user}/`,
+    user,
   });
+
+  expect(
+    builder.build(parser.parse(`https://www.instagram.com/${user}/`)!)
+  ).toEqual(`https://www.instagram.com/${user}/`);
 });

@@ -1,30 +1,33 @@
-export { SocialLinkParser } from './social-link';
+export { SocialLinkBuilder } from './builder';
+export { SocialLinkParser } from './parser';
 export {
   ISocialProfile,
+  ISocialProfileToBuild,
   OtherService,
+  SocialLinkBuildFunction,
   SocialLinkHostMatcher,
   SocialLinkParseFunction,
   SocialNetwork,
 } from './types';
-export { addBehance } from './services/behance';
-export { addDribbble } from './services/dribbble';
-export { addEtsy } from './services/etsy';
-export { addFacebook } from './services/facebook';
-export { addFlickr } from './services/flickr';
-export { addGitHub } from './services/github';
-export { addInstagram } from './services/instagram';
-export { addLinkedIn } from './services/linkedin';
-export { addMedium } from './services/medium';
-export { addMessenger } from './services/messenger';
-export { addPatreon } from './services/patreon';
-export { addPinterest } from './services/pinterest';
-export { addQuora } from './services/quora';
-export { addReddit } from './services/reddit';
-export { addSnapchat } from './services/snapchat';
-export { addSoundCloud } from './services/soundcloud';
-export { addTikTok } from './services/tiktok';
-export { addTumblr } from './services/tumblr';
-export { addTwitch } from './services/twitch';
-export { addTwitter } from './services/twitter';
-export { addYelp } from './services/yelp';
-export { addYouTube } from './services/youtube';
+export { addBehance, addBehanceBuilder } from './services/behance';
+export { addDribbble, addDribbbleBuilder } from './services/dribbble';
+export { addEtsy, addEtsyBuilder } from './services/etsy';
+export { addFacebook, addFacebookBuilder } from './services/facebook';
+export { addFlickr, addFlickrBuilder } from './services/flickr';
+export { addGitHub, addGitHubBuilder } from './services/github';
+export { addInstagram, addInstagramBuilder } from './services/instagram';
+export { addLinkedIn, addLinkedInBuilder } from './services/linkedin';
+export { addMedium, addMediumBuilder } from './services/medium';
+export { addMessenger, addMessengerBuilder } from './services/messenger';
+export { addPatreon, addPatreonBuilder } from './services/patreon';
+export { addPinterest, addPinterestBuilder } from './services/pinterest';
+export { addQuora, addQuoraBuilder } from './services/quora';
+export { addReddit, addRedditBuilder } from './services/reddit';
+export { addSnapchat, addSnapchatBuilder } from './services/snapchat';
+export { addSoundCloud, addSoundCloudBuilder } from './services/soundcloud';
+export { addTikTok, addTikTokBuilder } from './services/tiktok';
+export { addTumblr, addTumblrBuilder } from './services/tumblr';
+export { addTwitch, addTwitchBuilder } from './services/twitch';
+export { addTwitter, addTwitterBuilder } from './services/twitter';
+export { addYelp, addYelpBuilder } from './services/yelp';
+export { addYouTube, addYouTubeBuilder } from './services/youtube';

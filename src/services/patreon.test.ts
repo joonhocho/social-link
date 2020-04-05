@@ -1,16 +1,24 @@
-import { addPatreon } from './patreon';
-import { SocialLinkParser } from '_src/social-link';
+import { addPatreon, addPatreonBuilder } from './patreon';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 test('patreon', () => {
   const parser = new SocialLinkParser();
   addPatreon(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addPatreonBuilder(builder);
 
-  expect(parser.parse(`https://patreon.com/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://patreon.com/${user}`)).toEqual({
     service: 'patreon',
     type: 'user',
-    url: `https://www.patreon.com/${username}`,
-    username,
+    url: `https://www.patreon.com/${user}`,
+    user,
   });
+
+  expect(
+    builder.build(parser.parse(`https://www.patreon.com/${user}`)!)
+  ).toEqual(`https://www.patreon.com/${user}`);
 });

@@ -1,30 +1,42 @@
-import { addReddit } from './reddit';
-import { SocialLinkParser } from '_src/social-link';
+import { addReddit, addRedditBuilder } from './reddit';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 test('reddit', () => {
   const parser = new SocialLinkParser();
   addReddit(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addRedditBuilder(builder);
 
-  expect(parser.parse(`https://reddit.com/u/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://reddit.com/u/${user}`)).toEqual({
     service: 'reddit',
     type: 'user',
-    url: `https://www.reddit.com/user/${username}/`,
-    username,
+    url: `https://www.reddit.com/user/${user}/`,
+    user,
   });
 
-  expect(parser.parse(`https://reddit.com/user/${username}`)).toEqual({
+  expect(parser.parse(`https://reddit.com/user/${user}`)).toEqual({
     service: 'reddit',
     type: 'user',
-    url: `https://www.reddit.com/user/${username}/`,
-    username,
+    url: `https://www.reddit.com/user/${user}/`,
+    user,
   });
 
-  expect(parser.parse(`https://reddit.com/r/${username}`)).toEqual({
+  expect(
+    builder.build(parser.parse(`https://www.reddit.com/user/${user}/`)!)
+  ).toEqual(`https://www.reddit.com/user/${user}/`);
+
+  expect(parser.parse(`https://reddit.com/r/${user}`)).toEqual({
     service: 'reddit',
     type: 'subreddit',
-    url: `https://www.reddit.com/r/${username}/`,
-    username,
+    url: `https://www.reddit.com/r/${user}/`,
+    user,
   });
+
+  expect(
+    builder.build(parser.parse(`https://www.reddit.com/r/${user}/`)!)
+  ).toEqual(`https://www.reddit.com/r/${user}/`);
 });

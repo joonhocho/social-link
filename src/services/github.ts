@@ -1,17 +1,21 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'github';
 
 export const addGitHub = (parser: SocialLinkParser) =>
   parser.register(['github.com', 'www.github.com'], ({ pathnameParts }) => {
-    const [username] = pathnameParts;
-    if (username) {
+    const [user] = pathnameParts;
+    if (user) {
       return {
         service,
         type: 'user',
-        username,
-        url: `https://github.com/${username}`,
+        user,
+        url: `https://github.com/${user}`,
       };
     }
     return null;
   });
+
+export const addGitHubBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ user }) => `https://github.com/${user}`);

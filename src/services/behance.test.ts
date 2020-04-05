@@ -1,23 +1,32 @@
-import { addBehance } from './behance';
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
+
+import { addBehance, addBehanceBuilder } from './behance';
 
 test('behance', () => {
   const parser = new SocialLinkParser();
   addBehance(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addBehanceBuilder(builder);
 
-  expect(parser.parse(`https://www.behance.net/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://www.behance.net/${user}`)).toEqual({
     service: 'behance',
     type: 'user',
-    url: `https://www.behance.net/${username}`,
-    username,
+    url: `https://www.behance.net/${user}`,
+    user,
   });
 
-  expect(parser.parse(`//behance.com/${username}`)).toEqual({
+  expect(
+    builder.build(parser.parse(`https://www.behance.net/${user}`)!)
+  ).toEqual(`https://www.behance.net/${user}`);
+
+  expect(parser.parse(`//behance.com/${user}`)).toEqual({
     service: 'behance',
     type: 'user',
-    url: `https://www.behance.net/${username}`,
-    username,
+    url: `https://www.behance.net/${user}`,
+    user,
   });
 });

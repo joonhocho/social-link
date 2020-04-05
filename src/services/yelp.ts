@@ -1,34 +1,47 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'yelp';
 
 export const addYelp = (parser: SocialLinkParser) =>
   parser.register(['yelp.com', 'www.yelp.com'], (url) => {
-    const [p0, username] = url.pathnameParts;
+    const { pathnameParts } = url;
+    const [p0] = pathnameParts;
     switch (p0.toLowerCase()) {
       case 'biz': {
-        if (username) {
+        const user = pathnameParts[1];
+        if (user) {
           return {
             service,
             type: 'business',
-            username,
-            url: `https://www.yelp.com/biz/${username}`,
+            user,
+            url: `https://www.yelp.com/biz/${user}`,
           };
         }
         break;
       }
       case 'user_details': {
-        const userId = url.searchParams.userid;
-        if (userId) {
+        const user = url.searchParams.userid;
+        if (user) {
           return {
             service,
             type: 'user',
-            userId,
-            url: `https://www.yelp.com/user_details?userid=${userId}`,
+            user,
+            url: `https://www.yelp.com/user_details?userid=${user}`,
           };
         }
         break;
       }
     }
     return null;
+  });
+
+export const addYelpBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ type, user }) => {
+    switch (type) {
+      case 'user':
+        return `https://www.yelp.com/user_details?userid=${user}`;
+      default:
+        return `https://www.yelp.com/biz/${user}`;
+    }
   });

@@ -1,4 +1,5 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
 
 const service = 'instagram';
 
@@ -6,15 +7,18 @@ export const addInstagram = (parser: SocialLinkParser) =>
   parser.register(
     ['instagr.am', 'instagram.com', 'www.instagram.com'],
     ({ pathnameParts }) => {
-      const [username] = pathnameParts;
-      if (username) {
+      const [user] = pathnameParts;
+      if (user) {
         return {
           service,
           type: 'user',
-          username,
-          url: `https://www.instagram.com/${username}/`,
+          user,
+          url: `https://www.instagram.com/${user}/`,
         };
       }
       return null;
     }
   );
+
+export const addInstagramBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ user }) => `https://www.instagram.com/${user}/`);

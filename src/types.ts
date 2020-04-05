@@ -32,8 +32,7 @@ export type OtherService = 'website' | 'email' | 'phone';
 export interface ISocialProfile {
   service: SocialNetwork | OtherService | string;
   type: string; // user, group, shop, page
-  userId?: string;
-  username?: string;
+  user: string;
   url: string;
 }
 
@@ -43,3 +42,9 @@ export type SocialLinkParseFunction = (
 ) => ISocialProfile | null;
 
 export type SocialLinkHostMatcher = (hostname: string) => boolean;
+
+export type ISocialProfileToBuild = Omit<ISocialProfile, 'url'>;
+
+export type SocialLinkBuildFunction = (
+  info: ISocialProfileToBuild
+) => string | null | undefined;

@@ -32,10 +32,10 @@ export class SocialLinkParser {
     const urlObj = new URL(url);
     const hostname = urlObj.hostname.toLowerCase();
 
-    const hostParsers = _parsers[hostname];
-    if (hostParsers && hostParsers.length) {
-      for (let i = 0, l = hostParsers.length; i < l; i += 1) {
-        const res = hostParsers[i](urlObj, url);
+    const parsers = _parsers[hostname];
+    if (parsers) {
+      for (let i = 0, l = parsers.length; i < l; i += 1) {
+        const res = parsers[i](urlObj, url);
         if (res) {
           return res;
         }

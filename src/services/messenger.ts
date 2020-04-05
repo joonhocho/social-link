@@ -1,16 +1,17 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
 
 const service = 'messenger';
 
 export const addMessenger = (parser: SocialLinkParser) => {
   parser.register(['m.me'], ({ pathnameParts }) => {
-    const [username] = pathnameParts;
-    if (username) {
+    const [user] = pathnameParts;
+    if (user) {
       return {
         service,
         type: 'user',
-        username,
-        url: `https://www.messenger.com/t/${username}`,
+        user,
+        url: `https://www.messenger.com/t/${user}`,
       };
     }
     return null;
@@ -19,16 +20,22 @@ export const addMessenger = (parser: SocialLinkParser) => {
   parser.register(
     ['messenger.com', 'www.messenger.com'],
     ({ pathnameParts }) => {
-      const [p0, username] = pathnameParts;
-      if (p0.toLowerCase() === 't' && username) {
+      const [p0, user] = pathnameParts;
+      if (p0.toLowerCase() === 't' && user) {
         return {
           service,
           type: 'user',
-          username,
-          url: `https://www.messenger.com/t/${username}`,
+          user,
+          url: `https://www.messenger.com/t/${user}`,
         };
       }
       return null;
     }
   );
 };
+
+export const addMessengerBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(
+    service,
+    ({ user }) => `https://www.messenger.com/t/${user}`
+  );

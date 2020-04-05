@@ -1,4 +1,5 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'behance';
 
@@ -6,15 +7,18 @@ export const addBehance = (parser: SocialLinkParser) =>
   parser.register(
     ['behance.com', 'behance.net', 'www.behance.net'],
     ({ pathnameParts }) => {
-      const [username] = pathnameParts;
-      if (username) {
+      const [user] = pathnameParts;
+      if (user) {
         return {
           service,
           type: 'user',
-          username,
-          url: `https://www.behance.net/${username}`,
+          user,
+          url: `https://www.behance.net/${user}`,
         };
       }
       return null;
     }
   );
+
+export const addBehanceBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ user }) => `https://www.behance.net/${user}`);

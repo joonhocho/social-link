@@ -1,17 +1,21 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'twitter';
 
 export const addTwitter = (parser: SocialLinkParser) =>
   parser.register(['twitter.com', 'www.twitter.com'], ({ pathnameParts }) => {
-    const [username] = pathnameParts;
-    if (username) {
+    const [user] = pathnameParts;
+    if (user) {
       return {
         service,
         type: 'user',
-        username,
-        url: `https://twitter.com/${username}`,
+        user,
+        url: `https://twitter.com/${user}`,
       };
     }
     return null;
   });
+
+export const addTwitterBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ user }) => `https://twitter.com/${user}`);

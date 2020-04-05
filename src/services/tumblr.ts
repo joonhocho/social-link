@@ -1,4 +1,5 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
 
 const service = 'tumblr';
 
@@ -8,18 +9,18 @@ export const addTumblr = (parser: SocialLinkParser) =>
   parser.register(
     [(hostname) => hostname.endsWith(domainSuffix)],
     ({ hostname }) => {
-      const username = hostname.substring(
-        0,
-        hostname.length - domainSuffix.length
-      );
-      if (username) {
+      const user = hostname.substring(0, hostname.length - domainSuffix.length);
+      if (user) {
         return {
           service,
           type: 'user',
-          username,
-          url: `https://${username}.tumblr.com/`,
+          user,
+          url: `https://${user}.tumblr.com/`,
         };
       }
       return null;
     }
   );
+
+export const addTumblrBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ user }) => `https://${user}.tumblr.com/`);

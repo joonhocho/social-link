@@ -1,16 +1,24 @@
-import { addTwitch } from './twitch';
-import { SocialLinkParser } from '_src/social-link';
+import { addTwitch, addTwitchBuilder } from './twitch';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
 
 test('twitch', () => {
   const parser = new SocialLinkParser();
   addTwitch(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addTwitchBuilder(builder);
 
-  expect(parser.parse(`https://twitch.com/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://twitch.com/${user}`)).toEqual({
     service: 'twitch',
     type: 'user',
-    url: `https://www.twitch.tv/${username}`,
-    username,
+    url: `https://www.twitch.tv/${user}`,
+    user,
   });
+
+  expect(builder.build(parser.parse(`https://www.twitch.tv/${user}`)!)).toEqual(
+    `https://www.twitch.tv/${user}`
+  );
 });

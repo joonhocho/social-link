@@ -1,34 +1,45 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'reddit';
 
 export const addReddit = (parser: SocialLinkParser) =>
   parser.register(['reddit.com', 'www.reddit.com'], ({ pathnameParts }) => {
-    const [p0, username] = pathnameParts;
+    const [p0, user] = pathnameParts;
     switch (p0.toLowerCase()) {
       case 'u':
       case 'user': {
-        if (username) {
+        if (user) {
           return {
             service,
             type: 'user',
-            username,
-            url: `https://www.reddit.com/user/${username}/`,
+            user,
+            url: `https://www.reddit.com/user/${user}/`,
           };
         }
         break;
       }
       case 'r': {
-        if (username) {
+        if (user) {
           return {
             service,
             type: 'subreddit',
-            username,
-            url: `https://www.reddit.com/r/${username}/`,
+            user,
+            url: `https://www.reddit.com/r/${user}/`,
           };
         }
         break;
       }
     }
     return null;
+  });
+
+export const addRedditBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ type, user }) => {
+    switch (type) {
+      case 'subreddit':
+        return `https://www.reddit.com/r/${user}/`;
+      default:
+        return `https://www.reddit.com/user/${user}/`;
+    }
   });

@@ -1,16 +1,25 @@
-import { addMedium } from './medium';
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
+
+import { addMedium, addMediumBuilder } from './medium';
 
 test('medium', () => {
   const parser = new SocialLinkParser();
   addMedium(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addMediumBuilder(builder);
 
-  expect(parser.parse(`https://medium.com/@${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://medium.com/@${user}`)).toEqual({
     service: 'medium',
     type: 'user',
-    url: `https://medium.com/@${username}`,
-    username,
+    url: `https://medium.com/@${user}`,
+    user,
   });
+
+  expect(builder.build(parser.parse(`https://medium.com/@${user}`)!)).toEqual(
+    `https://medium.com/@${user}`
+  );
 });

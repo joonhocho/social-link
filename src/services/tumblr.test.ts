@@ -1,16 +1,24 @@
-import { addTumblr } from './tumblr';
-import { SocialLinkParser } from '_src/social-link';
+import { addTumblr, addTumblrBuilder } from './tumblr';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 test('tumblr', () => {
   const parser = new SocialLinkParser();
   addTumblr(parser);
 
-  const username = 'uSeRnAm';
+  const builder = new SocialLinkBuilder();
+  addTumblrBuilder(builder);
 
-  expect(parser.parse(`https://${username}.tumblr.com`)).toEqual({
+  const user = 'uSeRnAm';
+
+  expect(parser.parse(`https://${user}.tumblr.com`)).toEqual({
     service: 'tumblr',
     type: 'user',
-    url: `https://${username.toLowerCase()}.tumblr.com/`,
-    username: username.toLowerCase(),
+    url: `https://${user.toLowerCase()}.tumblr.com/`,
+    user: user.toLowerCase(),
   });
+
+  expect(
+    builder.build(parser.parse(`https://${user.toLowerCase()}.tumblr.com/`)!)
+  ).toEqual(`https://${user.toLowerCase()}.tumblr.com/`);
 });

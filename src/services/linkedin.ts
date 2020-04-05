@@ -1,33 +1,44 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
 
 const service = 'linkedin';
 
 export const addLinkedIn = (parser: SocialLinkParser) =>
   parser.register(['linkedin.com', 'www.linkedin.com'], ({ pathnameParts }) => {
-    const [p0, username] = pathnameParts;
+    const [p0, user] = pathnameParts;
     switch (p0.toLowerCase()) {
       case 'in': {
-        if (username) {
+        if (user) {
           return {
             service,
             type: 'user',
-            username,
-            url: `https://www.linkedin.com/in/${username}/`,
+            user,
+            url: `https://www.linkedin.com/in/${user}/`,
           };
         }
         break;
       }
       case 'company': {
-        if (username) {
+        if (user) {
           return {
             service,
             type: 'company',
-            username,
-            url: `https://www.linkedin.com/company/${username}/`,
+            user,
+            url: `https://www.linkedin.com/company/${user}/`,
           };
         }
         break;
       }
     }
     return null;
+  });
+
+export const addLinkedInBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ type, user }) => {
+    switch (type) {
+      case 'company':
+        return `https://www.linkedin.com/company/${user}/`;
+      default:
+        return `https://www.linkedin.com/in/${user}/`;
+    }
   });

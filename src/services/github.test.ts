@@ -1,16 +1,25 @@
-import { addGitHub } from './github';
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
+
+import { addGitHub, addGitHubBuilder } from './github';
 
 test('github', () => {
   const parser = new SocialLinkParser();
   addGitHub(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addGitHubBuilder(builder);
 
-  expect(parser.parse(`https://github.com/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://github.com/${user}`)).toEqual({
     service: 'github',
     type: 'user',
-    url: `https://github.com/${username}`,
-    username,
+    url: `https://github.com/${user}`,
+    user,
   });
+
+  expect(builder.build(parser.parse(`https://github.com/${user}`)!)).toEqual(
+    `https://github.com/${user}`
+  );
 });

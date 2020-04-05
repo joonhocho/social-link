@@ -1,23 +1,32 @@
-import { addMessenger } from './messenger';
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
+
+import { addMessenger, addMessengerBuilder } from './messenger';
 
 test('messenger', () => {
   const parser = new SocialLinkParser();
   addMessenger(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addMessengerBuilder(builder);
 
-  expect(parser.parse(`https://messenger.com/t/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://messenger.com/t/${user}`)).toEqual({
     service: 'messenger',
     type: 'user',
-    url: `https://www.messenger.com/t/${username}`,
-    username,
+    url: `https://www.messenger.com/t/${user}`,
+    user,
   });
 
-  expect(parser.parse(`https://m.me/${username}`)).toEqual({
+  expect(
+    builder.build(parser.parse(`https://www.messenger.com/t/${user}`)!)
+  ).toEqual(`https://www.messenger.com/t/${user}`);
+
+  expect(parser.parse(`https://m.me/${user}`)).toEqual({
     service: 'messenger',
     type: 'user',
-    url: `https://www.messenger.com/t/${username}`,
-    username,
+    url: `https://www.messenger.com/t/${user}`,
+    user,
   });
 });

@@ -1,23 +1,35 @@
-import { addYouTube } from './youtube';
-import { SocialLinkParser } from '_src/social-link';
+import { addYouTube, addYouTubeBuilder } from './youtube';
+import { SocialLinkBuilder } from '_src/builder';
+import { SocialLinkParser } from '_src/parser';
 
 test('youtube', () => {
   const parser = new SocialLinkParser();
   addYouTube(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addYouTubeBuilder(builder);
 
-  expect(parser.parse(`https://youtube.com/channel/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://youtube.com/channel/${user}`)).toEqual({
     service: 'youtube',
     type: 'channel',
-    url: `https://www.youtube.com/channel/${username}`,
-    userId: username,
+    url: `https://www.youtube.com/channel/${user}`,
+    user,
   });
 
-  expect(parser.parse(`https://youtube.com/user/${username}`)).toEqual({
+  expect(
+    builder.build(parser.parse(`https://www.youtube.com/channel/${user}`)!)
+  ).toEqual(`https://www.youtube.com/channel/${user}`);
+
+  expect(parser.parse(`https://youtube.com/user/${user}`)).toEqual({
     service: 'youtube',
     type: 'user',
-    url: `https://www.youtube.com/user/${username}`,
-    username,
+    url: `https://www.youtube.com/user/${user}`,
+    user,
   });
+
+  expect(
+    builder.build(parser.parse(`https://www.youtube.com/user/${user}`)!)
+  ).toEqual(`https://www.youtube.com/user/${user}`);
 });

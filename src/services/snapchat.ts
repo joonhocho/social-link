@@ -1,17 +1,24 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'snapchat';
 
 export const addSnapchat = (parser: SocialLinkParser) =>
   parser.register(['snapchat.com', 'www.snapchat.com'], ({ pathnameParts }) => {
-    const [p0, username] = pathnameParts;
-    if (p0.toLowerCase() === 'add' && username) {
+    const [p0, user] = pathnameParts;
+    if (p0.toLowerCase() === 'add' && user) {
       return {
         service,
         type: 'user',
-        username,
-        url: `https://www.snapchat.com/add/${username}`,
+        user,
+        url: `https://www.snapchat.com/add/${user}`,
       };
     }
     return null;
   });
+
+export const addSnapchatBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(
+    service,
+    ({ user }) => `https://www.snapchat.com/add/${user}`
+  );

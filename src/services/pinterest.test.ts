@@ -1,16 +1,24 @@
-import { addPinterest } from './pinterest';
-import { SocialLinkParser } from '_src/social-link';
+import { addPinterest, addPinterestBuilder } from './pinterest';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 test('pinterest', () => {
   const parser = new SocialLinkParser();
   addPinterest(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addPinterestBuilder(builder);
 
-  expect(parser.parse(`https://pinterest.com/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://pinterest.com/${user}`)).toEqual({
     service: 'pinterest',
     type: 'user',
-    url: `https://www.pinterest.com/${username}/`,
-    username,
+    url: `https://www.pinterest.com/${user}/`,
+    user,
   });
+
+  expect(
+    builder.build(parser.parse(`https://www.pinterest.com/${user}/`)!)
+  ).toEqual(`https://www.pinterest.com/${user}/`);
 });

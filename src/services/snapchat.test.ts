@@ -1,16 +1,24 @@
-import { addSnapchat } from './snapchat';
-import { SocialLinkParser } from '_src/social-link';
+import { addSnapchat, addSnapchatBuilder } from './snapchat';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 test('snapchat', () => {
   const parser = new SocialLinkParser();
   addSnapchat(parser);
 
-  const username = 'uSeRnAmE';
+  const builder = new SocialLinkBuilder();
+  addSnapchatBuilder(builder);
 
-  expect(parser.parse(`https://snapchat.com/add/${username}`)).toEqual({
+  const user = 'uSeRnAmE';
+
+  expect(parser.parse(`https://snapchat.com/add/${user}`)).toEqual({
     service: 'snapchat',
     type: 'user',
-    url: `https://www.snapchat.com/add/${username}`,
-    username,
+    url: `https://www.snapchat.com/add/${user}`,
+    user,
   });
+
+  expect(
+    builder.build(parser.parse(`https://www.snapchat.com/add/${user}`)!)
+  ).toEqual(`https://www.snapchat.com/add/${user}`);
 });

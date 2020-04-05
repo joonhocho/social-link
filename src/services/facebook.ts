@@ -1,4 +1,5 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'facebook';
 
@@ -9,42 +10,56 @@ export const addFacebook = (parser: SocialLinkParser) =>
       const [p0, p1] = pathnameParts;
       switch (p0.toLowerCase()) {
         case 'groups': {
-          const username = p1;
+          const user = p1;
           return {
             service,
             type: 'group',
-            username,
-            url: `https://www.facebook.com/groups/${username}`,
+            user,
+            url: `https://www.facebook.com/groups/${user}`,
           };
         }
         case 'pages': {
-          const username = p1;
+          const user = p1;
           return {
             service,
             type: 'page',
-            username,
-            url: `https://www.facebook.com/pages/${username}`,
+            user,
+            url: `https://www.facebook.com/pages/${user}`,
           };
         }
         case 'gaming': {
-          const username = p1;
+          const user = p1;
           return {
             service,
             type: 'gaming',
-            username,
-            url: `https://www.facebook.com/gaming/${username}`,
+            user,
+            url: `https://www.facebook.com/gaming/${user}`,
           };
         }
         default: {
-          const username = p0;
+          const user = p0;
           return {
             service,
             type: 'user',
-            username,
-            url: `https://www.facebook.com/${username}`,
+            user,
+            url: `https://www.facebook.com/${user}`,
           };
         }
       }
       return null;
     }
   );
+
+export const addFacebookBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ type, user }) => {
+    switch (type) {
+      case 'group':
+        return `https://www.facebook.com/groups/${user}`;
+      case 'page':
+        return `https://www.facebook.com/pages/${user}`;
+      case 'gaming':
+        return `https://www.facebook.com/gaming/${user}`;
+      default:
+        return `https://www.facebook.com/${user}`;
+    }
+  });

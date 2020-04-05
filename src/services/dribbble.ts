@@ -1,17 +1,21 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'dribbble';
 
 export const addDribbble = (parser: SocialLinkParser) =>
   parser.register(['dribbble.com', 'www.dribbble.com'], ({ pathnameParts }) => {
-    const [username] = pathnameParts;
-    if (username) {
+    const [user] = pathnameParts;
+    if (user) {
       return {
         service,
         type: 'user',
-        username,
-        url: `https://dribbble.com/${username}`,
+        user,
+        url: `https://dribbble.com/${user}`,
       };
     }
     return null;
   });
+
+export const addDribbbleBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ user }) => `https://dribbble.com/${user}`);

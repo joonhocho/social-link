@@ -1,4 +1,5 @@
-import { SocialLinkParser } from '_src/social-link';
+import { SocialLinkParser } from '_src/parser';
+import { SocialLinkBuilder } from '_src/builder';
 
 const service = 'pinterest';
 
@@ -6,15 +7,18 @@ export const addPinterest = (parser: SocialLinkParser) =>
   parser.register(
     ['pinterest.com', 'www.pinterest.com'],
     ({ pathnameParts }) => {
-      const [username] = pathnameParts;
-      if (username) {
+      const [user] = pathnameParts;
+      if (user) {
         return {
           service,
           type: 'user',
-          username,
-          url: `https://www.pinterest.com/${username}/`,
+          user,
+          url: `https://www.pinterest.com/${user}/`,
         };
       }
       return null;
     }
   );
+
+export const addPinterestBuilder = (builder: SocialLinkBuilder) =>
+  builder.register(service, ({ user }) => `https://www.pinterest.com/${user}/`);
