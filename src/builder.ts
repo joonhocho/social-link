@@ -1,7 +1,9 @@
 import { SocialLinkBuildFunction, ISocialProfileToBuild } from './types';
 
 export class SocialLinkBuilder {
-  private _builders: { [service: string]: SocialLinkBuildFunction[] } = {};
+  private _builders: {
+    [service: string]: SocialLinkBuildFunction[] | undefined;
+  } = {};
 
   public register(service: string, builder: SocialLinkBuildFunction): void {
     const { _builders } = this;
@@ -12,10 +14,12 @@ export class SocialLinkBuilder {
     const { _builders } = this;
 
     const builders = _builders[info.service];
-    for (let i = 0, l = builders.length; i < l; i += 1) {
-      const url = builders[i](info);
-      if (url) {
-        return url;
+    if (builders) {
+      for (let i = 0, l = builders.length; i < l; i += 1) {
+        const url = builders[i](info);
+        if (url) {
+          return url;
+        }
       }
     }
 

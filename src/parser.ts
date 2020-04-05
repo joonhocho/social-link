@@ -6,7 +6,9 @@ import {
 import { URL } from 'ts-url';
 
 export class SocialLinkParser {
-  private _parsers: { [hostname: string]: SocialLinkParseFunction[] } = {};
+  private _parsers: {
+    [hostname: string]: SocialLinkParseFunction[] | undefined;
+  } = {};
   private _wildParsers: Array<
     [SocialLinkHostMatcher, SocialLinkParseFunction]
   > = [];
