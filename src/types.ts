@@ -34,6 +34,7 @@ export interface ISocialProfile {
   type: string; // user, group, shop, page
   user: string;
   url: string;
+  params?: { [key: string]: string };
 }
 
 export type SocialLinkParseFunction = (
