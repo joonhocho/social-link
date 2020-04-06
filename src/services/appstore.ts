@@ -7,20 +7,20 @@ export const addAppStore = (parser: SocialLinkParser) =>
   parser.register(
     ['apps.apple.com', 'itunes.apple.com'],
     ({ pathnameParts }) => {
-      const [region, app, name, user] = pathnameParts;
-      if (app.toLowerCase() === 'app' && user) {
+      const [region, artist, nameOrId, idOrNull] = pathnameParts;
+      if (artist.toLowerCase() === 'app' && nameOrId) {
         const regionL = region.toLowerCase();
+        const id = idOrNull || nameOrId;
+        const name = idOrNull ? nameOrId : '';
+        const path = name ? `${encodeURIComponent(name)}/${id}` : id;
         return {
           service,
           type: 'app',
-          user,
-          url: `https://apps.apple.com/${regionL}/app/${encodeURIComponent(
-            name
-          )}/${user}`,
-          params: {
-            region: regionL,
-            name,
-          },
+          user: id,
+          url: `https://apps.apple.com/${regionL}/app/${path}`,
+          params: name
+            ? { region: regionL, name }
+            : ({ region: regionL } as { [key: string]: string }),
         };
       }
       return null;
@@ -30,6 +30,8 @@ export const addAppStore = (parser: SocialLinkParser) =>
 export const addAppStoreBuilder = (builder: SocialLinkBuilder) =>
   builder.register(
     service,
-    ({ user, params: { region = 'us', name = 'null' } = {} }) =>
-      `https://apps.apple.com/${region}/app/${encodeURIComponent(name)}/${user}`
+    ({ user, params: { region = 'us', name } = {} }) =>
+      `https://apps.apple.com/${region}/app/${
+        name ? `${encodeURIComponent(name)}/` : ''
+      }${user}`
   );

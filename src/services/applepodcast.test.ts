@@ -36,4 +36,12 @@ test('applepodcast', () => {
   ).toEqual(
     `https://podcasts.apple.com/${region.toLowerCase()}/podcast/${name}/${user}`
   );
+
+  expect(
+    builder.build(
+      parser.parse(`https://podcasts.apple.com/${region}/podcast/${user}`)!
+    )
+  ).toEqual(
+    `https://podcasts.apple.com/${region.toLowerCase()}/podcast/${user}`
+  );
 });

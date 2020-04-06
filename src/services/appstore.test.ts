@@ -34,4 +34,8 @@ test('appstore', () => {
   ).toEqual(
     `https://apps.apple.com/${region.toLowerCase()}/app/${name}/${user}`
   );
+
+  expect(
+    builder.build(parser.parse(`https://apps.apple.com/${region}/app/${user}`)!)
+  ).toEqual(`https://apps.apple.com/${region.toLowerCase()}/app/${user}`);
 });

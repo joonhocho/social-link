@@ -34,4 +34,10 @@ test('applemusic', () => {
   ).toEqual(
     `https://music.apple.com/${region.toLowerCase()}/artist/${name}/${user}`
   );
+
+  expect(
+    builder.build(
+      parser.parse(`https://music.apple.com/${region}/artist/${user}`)!
+    )
+  ).toEqual(`https://music.apple.com/${region.toLowerCase()}/artist/${user}`);
 });
